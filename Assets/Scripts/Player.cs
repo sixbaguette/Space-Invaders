@@ -1,5 +1,5 @@
 using System;
-using System.Xml.Serialization;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,6 +30,16 @@ public class PlayerScript : MonoBehaviour
     [Range(0f, 1f)]
     public float boundaryPercentage = 0.8f;
 
+    public Sprite spriteDeath1;
+    public Sprite spriteDeath2;
+    public Sprite spritePlayer;
+
+    private SpriteRenderer spriteRendererDeath;
+
+    private int index = 0;
+
+    public bool IsPlaying = false;
+
     private enum PlayerState
     {
         Idle,
@@ -43,6 +53,8 @@ public class PlayerScript : MonoBehaviour
     #region Initialize Region
     private void Awake()
     {
+        spriteRendererDeath = GetComponent<SpriteRenderer>();
+
         Application.targetFrameRate = 60;
 
         rb = GetComponent<Rigidbody2D>();
@@ -193,4 +205,52 @@ public class PlayerScript : MonoBehaviour
         Gizmos.DrawLine(new Vector3(boundary, -10, 0), new Vector3(boundary, 10, 0));
     }
     #endregion
+
+    public IEnumerator PlayDeathAnimation()
+    {
+        if (MenuPause.IsPaused)
+        {
+            yield return null;
+        }
+        else
+        {
+            IsPlaying = true;
+            int timer = 0;
+            int duration = 58;
+
+            while (duration > 0)
+            {
+                timer = timer % 5;
+                timer++;
+
+                if (timer == 5)
+                {
+                    switch (index)
+                    {
+                        case 0:
+                            spriteRendererDeath.sprite = spriteDeath1;
+
+                            yield return new WaitForEndOfFrame();
+
+                            break;
+                        case 1:
+                            spriteRendererDeath.sprite = spriteDeath2;
+                            for (int i = 0; i < 5; i++)
+                            {
+                                yield return new WaitForEndOfFrame();
+                            }
+                            break;
+                    }
+                    index++;
+                    index = index % 2;
+                }
+
+                duration--;
+                yield return new WaitForEndOfFrame();
+            }
+
+            spriteRendererDeath.sprite = spritePlayer;
+            IsPlaying = false;
+        }
+    }
 }

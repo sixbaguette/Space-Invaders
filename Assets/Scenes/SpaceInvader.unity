@@ -2981,6 +2981,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4881201938007136033, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
+      propertyPath: spriteDeath1
+      value: 
+      objectReference: {fileID: 21300000, guid: 8c240387635ee244281ffdd3777496bd, type: 3}
+    - target: {fileID: 4881201938007136033, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
+      propertyPath: spriteDeath2
+      value: 
+      objectReference: {fileID: 21300000, guid: 8446d5bdff4b93345a869be0a6baadde, type: 3}
+    - target: {fileID: 4881201938007136033, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
+      propertyPath: spritePlayer
+      value: 
+      objectReference: {fileID: 21300000, guid: a562a0b3dc6b85f4bb916ce41fd3acad, type: 3}
     - target: {fileID: 6981459304042638404, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
       propertyPath: m_Name
       value: Player

@@ -1,8 +1,5 @@
-using System;
 using TMPro;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -57,13 +54,13 @@ public class GameManager : MonoBehaviour
         score += points;
         if (score.ToString().Length <= 2)
         {
-            scoreUI.text = "00"+score.ToString();
+            scoreUI.text = "00" + score.ToString();
             return;
         }
 
         if (score.ToString().Length == 3)
         {
-            scoreUI.text = "0"+score.ToString();
+            scoreUI.text = "0" + score.ToString();
             return;
         }
 
@@ -76,7 +73,12 @@ public class GameManager : MonoBehaviour
         lives--;
         if (lives == 0)
         {
-            GameOver();
+            StartCoroutine(GameObject.Find("Player").GetComponent<PlayerScript>().PlayDeathAnimation());
+
+            if (GameObject.Find("Player").GetComponent<PlayerScript>().IsPlaying == false)
+            {
+                GameOver();
+            }
         }
 
         if (lives == 3)
@@ -87,10 +89,12 @@ public class GameManager : MonoBehaviour
         else if (lives == 2)
         {
             livesSprite[1].SetActive(false);
+            StartCoroutine(GameObject.Find("Player").GetComponent<PlayerScript>().PlayDeathAnimation());
         }
         else if (lives == 1)
         {
             livesSprite[0].SetActive(false);
+            StartCoroutine(GameObject.Find("Player").GetComponent<PlayerScript>().PlayDeathAnimation());
         }
 
         livesCount.text = lives.ToString();
@@ -111,12 +115,12 @@ public class GameManager : MonoBehaviour
     private void SaveScore()
     {
         if (score < highScore) return;
- 
+
         PlayerPrefs.SetInt("Score", score);
         PlayerPrefs.Save();
     }
 
-    private void ResetScore() 
+    private void ResetScore()
     {
         PlayerPrefs.SetInt("Score", 0);
         PlayerPrefs.Save();
