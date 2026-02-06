@@ -131,6 +131,9 @@ GameObject:
   - component: {fileID: 91583886}
   - component: {fileID: 91583885}
   - component: {fileID: 91583888}
+  - component: {fileID: 91583890}
+  - component: {fileID: 91583889}
+  - component: {fileID: 91583891}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -207,6 +210,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1179811273}
   sceneNameToLoad: SpaceInvader
+--- !u!114 &91583889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91583884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df76cc74bfe5e8544b6611be4b44c746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ufoPool: {fileID: 91583890}
+  yPosition: 8
+  xOffset: 12
+--- !u!114 &91583890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91583884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483e460f904c2f44fa9e7c8e48792936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ufoPrefab: {fileID: 3957062832416261666, guid: 56255713f2f21cd4a8367f6f9988c6d5, type: 3}
+--- !u!114 &91583891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91583884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382d9fa7f23d7b4458cb1a200a0847f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyManager: {fileID: 91583885}
 --- !u!1 &98260360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,7 +1503,6 @@ MonoBehaviour:
   livesSprite:
   - {fileID: 98260360}
   - {fileID: 917819743}
-  - {fileID: 0}
   livesCount: {fileID: 2122365317}
 --- !u!4 &994380126
 Transform:
@@ -2175,6 +2218,18 @@ MonoBehaviour:
   missilePrefab: {fileID: 2385425526990083850, guid: 6b861323e878b184eaedf2495b7ebb22, type: 3}
   firePoint: {fileID: 277338889}
   poolSize: 100
+--- !u!114 &1182103853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182103841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a55ac9f13dd3b43abb3fa6d44313eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1419972036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5321253107218395025, guid: 17fe917b96cbd294f8edd9d4481bd12a, type: 3}
@@ -3012,6 +3067,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6981459304042638404, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1182103847}
+    - targetCorrespondingSourceObject: {fileID: 6981459304042638404, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1182103853}
   m_SourcePrefab: {fileID: 100100000, guid: dc53ffaa98fe39047ab90b8afbe71d18, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

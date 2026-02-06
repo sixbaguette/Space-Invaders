@@ -1,5 +1,3 @@
-using System;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,6 +47,8 @@ public class MissileManager : MonoBehaviour
                     missilePool[index].transform.position = firePoint.position;
                     missilePool[index].transform.rotation = firePoint.rotation;
                     missilePool[index].SetActive(true);
+
+                    PlayerShotCounter.Instance.RegisterShot();
 
                     currentMissileIndex = (index + 1) % poolSize;
                     return;

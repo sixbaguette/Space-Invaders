@@ -1,30 +1,52 @@
 using UnityEngine;
 
-public class UFOpool : MonoBehaviour
+public class UFOPool : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject UFOPrefab;
+    [SerializeField] private GameObject ufoPrefab;
 
-    public int poolSize = 1;
-    private GameObject UFOPool;
+    private GameObject ufoInstance;
 
-    private void Start()
+    private void Awake()
     {
-        UFOPool = Instantiate(UFOPrefab);
-        UFOPool.SetActive(false);
+        if (ufoPrefab == null)
+        {
+            Debug.LogError("UFOPool : ufoPrefab n'est pas assigné !");
+            return;
+        }
+
+        ufoInstance = Instantiate(ufoPrefab);
+        ufoInstance.SetActive(false);
+
+        UFOController controller = ufoInstance.GetComponent<UFOController>();
+        if (controller != null && controller.ufoSound == null)
+        {
+            AudioSource source = ufoInstance.GetComponent<AudioSource>();
+            if (source != null)
+                controller.ufoSound = source;
+            else
+                Debug.LogWarning("UFOPool : aucun AudioSource trouvé pour le UFO !");
+        }
     }
 
-    private void OnUFOSpawn()
+    public GameObject SpawnUFO(Vector3 position)
     {
-        if (MenuPause.IsPaused) return;
-        if (!GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
+        if (ufoInstance == null)
         {
-            if (!UFOPool.activeSelf)
-            {
-                UFOPool.SetActive(true);
-
-                return;
-            }
+            Debug.LogWarning("UFOPool : ufoInstance est null !");
+            return null;
         }
+
+        if (ufoInstance.activeSelf)
+            return null;
+
+        ufoInstance.transform.position = position;
+        ufoInstance.SetActive(true);
+        return ufoInstance;
+    }
+
+    public void DespawnUFO()
+    {
+        if (ufoInstance != null)
+            ufoInstance.SetActive(false);
     }
 }

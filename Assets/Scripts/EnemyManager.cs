@@ -1,9 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using TMPro;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -20,7 +18,7 @@ public class EnemyManager : MonoBehaviour
     public float _stepDistance = 0.5f;
     public float stepDistanceVertical = 1f;
 
-    public Vector2 startPosition = new Vector2 (-6.5f, 7.5f);
+    public Vector2 startPosition = new Vector2(-6.5f, 7.5f);
 
     private GameObject[,] enemies;
     private int reverseGrave;
@@ -308,7 +306,7 @@ public class EnemyManager : MonoBehaviour
         reverseGrave--;
         if (reverseGrave <= 0)
         {
-            GameManager.Instance.CompletedLevel();
+            LevelManager.Instance.OnWaveCompleted();
         }
 
         StartCoroutine(ExplosionCoroutine(enemy, prefab));
