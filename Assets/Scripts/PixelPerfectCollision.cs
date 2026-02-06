@@ -38,7 +38,7 @@ public class PixelPerfectCollision : MonoBehaviour
                 InstantiatePlayerMissileMaskAtPosition(worldImpactPoint);
                 
                 // resetMissile
-                collision.gameObject.GetComponent<PlayerMissile>()?.ResetMissile();
+                StartCoroutine(collision.gameObject.GetComponent<PlayerMissile>()?.PlayerMissileDeath());
             }
         }
 
@@ -56,7 +56,7 @@ public class PixelPerfectCollision : MonoBehaviour
                 InstantiateEnemyMissileMaskAtPosition(worldImpactPoint);
 
                 // resetMissile
-                collision.gameObject.GetComponent<EnemyMissile>()?.ResetMissile();
+                StartCoroutine(collision.gameObject.GetComponent<EnemyMissile>()?.MissileDeath());
             }
         }
 
@@ -74,7 +74,7 @@ public class PixelPerfectCollision : MonoBehaviour
                 InstantiateEnemyLaserMaskAtPosition(worldImpactPoint);
 
                 // resetMissile
-                collision.gameObject.GetComponent<EnemyLaser>()?.ResetMissile();
+                StartCoroutine(collision.gameObject.GetComponent<EnemyLaser>()?.LaserDeath());
             }
         }
 
@@ -92,7 +92,7 @@ public class PixelPerfectCollision : MonoBehaviour
                 InstantiateEnemyBulletMaskAtPosition(worldImpactPoint);
 
                 // resetMissile
-                collision.gameObject.GetComponent<EnemyBullet>()?.ResetMissile();
+                StartCoroutine(collision.gameObject.GetComponent<EnemyBullet>()?.BulletDeath());
             }
         }
 
@@ -201,21 +201,5 @@ public class PixelPerfectCollision : MonoBehaviour
     {
         GameObject maskInstance3 = Instantiate(maskPrefabBullet, worldPosition, Quaternion.identity);
         maskInstance3.transform.position = new Vector3(worldPosition.x, worldPosition.y, shelterSprite.transform.position.z);
-    }
-
-    private void Test(string tag)
-    {
-        switch (tag){
-
-            case "tag1" :
-                break;
-            case "tag2":
-                break;
-            case "tag3":
-                break;
-            case "tag4":
-                break;
-
-        }
     }
 }

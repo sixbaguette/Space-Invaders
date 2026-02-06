@@ -177,3 +177,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 25
   maxHeight: 10
+  playerMissileDeath: {fileID: 21300000, guid: fd78d0d67d3133c47b1ff54a6ea88537, type: 3}
+  missileSprite: {fileID: 21300000, guid: 55bb918cae0309e4b804143a223a3f32, type: 3}

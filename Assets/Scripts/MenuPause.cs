@@ -61,13 +61,11 @@ public class MenuPause : MonoBehaviour
 
     public void Restart()
     {
+        IsPaused = false;
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
+
         SceneManager.LoadScene(sceneNameToLoad);
-        restart = true;
-        if (restart)
-        {
-            IsPaused = false;
-            restart = false;
-        }
     }
 
     public void QuitGame()

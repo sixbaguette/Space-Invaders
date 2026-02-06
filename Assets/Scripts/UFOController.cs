@@ -1,22 +1,33 @@
+using System.Collections;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 
 public class UFOController : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
-    [SerializeField] public AudioSource ufoSound;
 
     private Vector2 direction;
     private int spawnShotIndex;
 
-    private void OnEnable()
+    private SpriteRenderer spriteRenderer;
+
+    public Sprite UFODeathSprite;
+
+    public TextMeshProUGUI scoreUFODeathTMP;
+
+    private int scoreUFODeath;
+
+    public Sprite UFOSprite;
+
+    private void Awake()
     {
-        spawnShotIndex = PlayerShotCounter.Instance.TotalShots;
-        ufoSound.Play();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void OnDisable()
+    public void Initialize(int currentShots)
     {
-        ufoSound.Stop();
+        spawnShotIndex = currentShots;
     }
 
     public void SetDirection(Vector2 dir)
@@ -26,32 +37,60 @@ public class UFOController : MonoBehaviour
 
     private void Update()
     {
+        if (MenuPause.IsPaused || GameManager.Instance.isExploding) return;
         transform.Translate(direction * speed * Time.deltaTime);
+
+        spriteRenderer.sprite = UFOSprite;
 
         if (Mathf.Abs(transform.position.x) > 12f)
         {
+            UFOManager manager = FindFirstObjectByType<UFOManager>();
+            if (manager != null)
+                manager.OnUFODespawned();
+
             gameObject.SetActive(false);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("PlayerBullet")) return;
+        if (!other.CompareTag("Missile")) return;
 
-        int shotsAfterSpawn =
-            PlayerShotCounter.Instance.TotalShots - spawnShotIndex;
+        int shotsAfterSpawn = PlayerShotCounter.Instance.TotalShots - spawnShotIndex;
+        scoreUFODeath = shotsAfterSpawn <= 1 ? 300 : (shotsAfterSpawn == 2 ? 150 : 100);
 
-        int score = GetScore(shotsAfterSpawn);
-        GameManager.Instance.AddScore(score);
+        GameManager.Instance.AddScore(scoreUFODeath);
 
         other.gameObject.SetActive(false);
-        gameObject.SetActive(false);
+
+        UFOManager manager = FindFirstObjectByType<UFOManager>();
+        if (manager != null)
+            manager.OnUFODespawned();
+
+        StartCoroutine(UFODeath());
     }
 
-    private int GetScore(int shots)
+    private IEnumerator UFODeath()
     {
-        if (shots <= 1) return 300;
-        if (shots == 2) return 150;
-        return 100;
+        GameManager.Instance.isExploding = true;
+
+        int explosion = 150;
+        for (int i = 0; i < explosion; i++)
+        {
+            spriteRenderer.sprite = UFODeathSprite;
+            yield return new WaitForEndOfFrame();
+        }
+
+        int score = 100;
+        scoreUFODeathTMP.text = scoreUFODeath.ToString();
+        spriteRenderer.sprite = null;
+        for (int i = 0; i < score; i++)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        scoreUFODeathTMP.text = null;
+        gameObject.SetActive(false);
+        GameManager.Instance.isExploding = false;
     }
 }

@@ -195,3 +195,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   maxHeight: -10
+  bulletDeath: {fileID: 21300000, guid: 325cfef9ba74144469301fff2b1edc10, type: 3}

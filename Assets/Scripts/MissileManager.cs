@@ -15,6 +15,10 @@ public class MissileManager : MonoBehaviour
 
     private InputSystem_Actions controls;
 
+    [SerializeField]
+    private float fireCooldown = 1f;
+    private float lastFireTime = 0f;
+
     private void Awake()
     {
         controls = new InputSystem_Actions();
@@ -34,30 +38,33 @@ public class MissileManager : MonoBehaviour
     }
 
     private void OnFire(InputAction.CallbackContext ctx)
+{
+    if (MenuPause.IsPaused) return;
+    if (ctx.performed && !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
     {
-        if (MenuPause.IsPaused) return;
-        if (ctx.performed && !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
+        if(Time.time - lastFireTime < fireCooldown) return;
+        lastFireTime = Time.time;
+
+        for (int i = 0; i < poolSize; i++)
         {
-            for (int i = 0; i < poolSize; i++)
+            int index = (currentMissileIndex + i) % poolSize;
+
+            if (!missilePool[index].activeSelf)
             {
-                int index = (currentMissileIndex + i) % poolSize;
+                missilePool[index].transform.position = firePoint.position;
+                missilePool[index].transform.rotation = firePoint.rotation;
+                missilePool[index].SetActive(true);
 
-                if (!missilePool[index].activeSelf)
-                {
-                    missilePool[index].transform.position = firePoint.position;
-                    missilePool[index].transform.rotation = firePoint.rotation;
-                    missilePool[index].SetActive(true);
+                PlayerShotCounter.Instance.RegisterShot();
 
-                    PlayerShotCounter.Instance.RegisterShot();
-
-                    currentMissileIndex = (index + 1) % poolSize;
-                    return;
-                }
+                currentMissileIndex = (index + 1) % poolSize;
+                return;
             }
-
-            Debug.Log("Aucun missile disponible !");
         }
+
+        Debug.Log("Aucun missile disponible !");
     }
+}
 
     private void OnEnable()
     {

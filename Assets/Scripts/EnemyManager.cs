@@ -36,6 +36,10 @@ public class EnemyManager : MonoBehaviour
 
     public TextMeshProUGUI textScrore;
 
+    public int currentLoop = 0;
+    public float speedMultiplier = 1f;
+    public float fireRateMultiplier = 1f;
+
     void Start()
     {
         playerBoundaryX = player.GetComponent<PlayerScript>().boundary;
@@ -107,7 +111,7 @@ public class EnemyManager : MonoBehaviour
                     {
                         Vector3 direction = currentState == MoveState.MoveRight ? Vector3.right : Vector3.left;
 
-                        MoveEnemy(enemies[row, col], direction, _stepDistance);
+                        MoveEnemy(enemies[row, col], direction, _stepDistance * speedMultiplier);
 
                         if (enemies[row, col] == null) continue;
 
@@ -166,7 +170,7 @@ public class EnemyManager : MonoBehaviour
             {
                 yield return new WaitUntil(() => !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding);
 
-                yield return new WaitForSeconds(Random.Range(missileInterval, missileInterval * 2));
+                yield return new WaitForSeconds(Random.Range(missileInterval / fireRateMultiplier, missileInterval * 2 / fireRateMultiplier));
 
                 List<GameObject> shooters = GetBottomEnemies();
 
@@ -177,7 +181,7 @@ public class EnemyManager : MonoBehaviour
                     FireMissile(shooter);
                 }
 
-                yield return new WaitForSeconds(Random.Range(missileInterval, missileInterval * 2));
+                yield return new WaitForSeconds(Random.Range(missileInterval / fireRateMultiplier, missileInterval * 2 / fireRateMultiplier));
 
                 if (shooters.Count > 0 && !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
                 {
@@ -186,7 +190,7 @@ public class EnemyManager : MonoBehaviour
                     FireLaser(shooter);
                 }
 
-                yield return new WaitForSeconds(Random.Range(missileInterval, missileInterval * 2));
+                yield return new WaitForSeconds(Random.Range(missileInterval / fireRateMultiplier, missileInterval * 2 / fireRateMultiplier));
 
                 if (shooters.Count > 0 && !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
                 {
@@ -306,7 +310,7 @@ public class EnemyManager : MonoBehaviour
         reverseGrave--;
         if (reverseGrave <= 0)
         {
-            LevelManager.Instance.OnWaveCompleted();
+            StartNextWave();
         }
 
         StartCoroutine(ExplosionCoroutine(enemy, prefab));
@@ -372,5 +376,23 @@ public class EnemyManager : MonoBehaviour
     public void TextScore()
     {
         textScrore.text = ("Enemy Left : ") + reverseGrave.ToString();
+    }
+
+    public void StartNextWave()
+    {
+        reverseGrave = 0;
+
+        currentState = MoveState.MoveRight;
+
+        currentLoop++;
+        speedMultiplier = 1f + currentLoop * 0.1f;
+        fireRateMultiplier = 1f + currentLoop * 0.1f;
+
+        SpawnEnemies();
+
+        StopAllCoroutines();
+
+        StartCoroutine(HandleEnemyMovement());
+        StartCoroutine(EnemyShooting());
     }
 }

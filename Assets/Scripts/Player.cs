@@ -80,8 +80,8 @@ public class PlayerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (MenuPause.IsPaused) return;
-        if (GameManager.Instance.IsPaused == true)
+        // if (MenuPause.IsPaused) return;
+        if (GameManager.Instance.IsPaused == true || GameManager.Instance.isExploding == true)
             return;
 
         if (Mathf.Approximately(targetSpeed - currentSpeed, 0) && currentState != PlayerState.Idle)
@@ -130,7 +130,6 @@ public class PlayerScript : MonoBehaviour
 
     private void HandheldMovePressed(InputAction.CallbackContext ctx)
     {
-        if (MenuPause.IsPaused) return;
         moveInput = ctx.ReadValue<Vector2>();
         targetSpeed = Mathf.Clamp(moveInput.x * MaxSpeed, -MaxSpeed, MaxSpeed);
         accelTime = 0f;
@@ -138,7 +137,6 @@ public class PlayerScript : MonoBehaviour
 
     private void HandeldMoveReleased(InputAction.CallbackContext ctx)
     {
-        if (MenuPause.IsPaused) return;
         moveInput = Vector2.zero;
         targetSpeed = 0f;
         decelTime = 0f;
@@ -146,7 +144,6 @@ public class PlayerScript : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        if (MenuPause.IsPaused) return;
         float curveTimeScale = accelValue.keys[accelValue.keys.Length - 1].time;
         accelTime += Time.deltaTime / ((accelFrameDuration * Time.fixedDeltaTime) / curveTimeScale);
 
@@ -161,7 +158,6 @@ public class PlayerScript : MonoBehaviour
 
     private void HandleDeceleration()
     {
-        if (MenuPause.IsPaused) return;
         float curveTimeScale = decelValue.keys[decelValue.keys.Length - 1].time;
         decelTime += Time.deltaTime / ((decelFrameDuration * Time.fixedDeltaTime) / curveTimeScale);
 
@@ -220,6 +216,8 @@ public class PlayerScript : MonoBehaviour
 
             while (duration > 0)
             {
+                GameManager.Instance.isExploding = true;
+                
                 timer = timer % 5;
                 timer++;
 
@@ -248,6 +246,8 @@ public class PlayerScript : MonoBehaviour
                 duration--;
                 yield return new WaitForEndOfFrame();
             }
+
+            GameManager.Instance.isExploding = false;
 
             spriteRendererDeath.sprite = spritePlayer;
             IsPlaying = false;

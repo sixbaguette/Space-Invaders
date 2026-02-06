@@ -3,8 +3,6 @@ using UnityEngine;
 public class UFOManager : MonoBehaviour
 {
     [SerializeField] private UFOPool ufoPool;
-
-    [Header("Spawn Settings")]
     [SerializeField] private float yPosition = 4.5f;
     [SerializeField] private float xOffset = 12f;
 
@@ -18,8 +16,7 @@ public class UFOManager : MonoBehaviour
 
     private int currentWave = 0;
     private int nextUFOIndex = 0;
-
-    private int lastSpawnShot = 0;
+    private int waveStartShots = 0;
 
     private void OnEnable()
     {
@@ -33,27 +30,30 @@ public class UFOManager : MonoBehaviour
             PlayerShotCounter.Instance.RegisterShotEvent -= OnPlayerShot;
     }
 
+    public void OnWaveStarted(int wave)
+    {
+        currentWave = wave % 4;
+        nextUFOIndex = 0;
+        waveStartShots = PlayerShotCounter.Instance != null ? PlayerShotCounter.Instance.TotalShots : 0;
+    }
+
     private void OnPlayerShot(int totalShots)
     {
-        if (nextUFOIndex >= ufoSpawnShotsPerWave[currentWave].Length)
-            return;
+        if (nextUFOIndex >= ufoSpawnShotsPerWave[currentWave].Length) return;
 
-        int shotsSinceLastSpawn = totalShots - lastSpawnShot;
-
+        int shotsSinceWaveStart = totalShots - waveStartShots;
         int targetShots = ufoSpawnShotsPerWave[currentWave][nextUFOIndex];
 
-        if (shotsSinceLastSpawn >= targetShots)
+        if (shotsSinceWaveStart >= targetShots)
         {
             SpawnUFO();
             nextUFOIndex++;
-            lastSpawnShot = totalShots;
         }
     }
 
     private void SpawnUFO()
     {
         bool fromLeft = Random.value > 0.5f;
-
         float x = fromLeft ? -xOffset : xOffset;
         Vector3 spawnPos = new Vector3(x, yPosition, 0f);
 
@@ -64,10 +64,8 @@ public class UFOManager : MonoBehaviour
         ufo.GetComponent<UFOController>().SetDirection(dir);
     }
 
-    public void OnWaveStarted(int wave)
+    public void OnUFODespawned()
     {
-        currentWave = wave % 4;
-        nextUFOIndex = 0;
-        lastSpawnShot = PlayerShotCounter.Instance != null ? PlayerShotCounter.Instance.TotalShots : 0;
+        waveStartShots = PlayerShotCounter.Instance != null ? PlayerShotCounter.Instance.TotalShots : 0;
     }
 }

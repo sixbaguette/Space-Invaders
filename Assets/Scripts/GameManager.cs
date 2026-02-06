@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(GameObject.Find("Player").GetComponent<PlayerScript>().PlayDeathAnimation());
 
-            if (GameObject.Find("Player").GetComponent<PlayerScript>().IsPlaying == false)
+            if (lives == 0)
             {
                 GameOver();
             }
