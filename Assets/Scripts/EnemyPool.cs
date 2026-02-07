@@ -73,11 +73,11 @@ public class EnemyPool : MonoBehaviour
         switch (index)
         {
             case 0: //type A
-                return 22;
+                return 22; //22
             case 1: //type B
-                return 22;
+                return 22; //22
             case 2: //type C
-                return 11;
+                return 11; //11
             default: 
                 return 0;
         }

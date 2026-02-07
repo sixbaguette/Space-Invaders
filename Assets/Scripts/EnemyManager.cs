@@ -36,10 +36,6 @@ public class EnemyManager : MonoBehaviour
 
     public TextMeshProUGUI textScrore;
 
-    public int currentLoop = 0;
-    public float speedMultiplier = 1f;
-    public float fireRateMultiplier = 1f;
-
     void Start()
     {
         playerBoundaryX = player.GetComponent<PlayerScript>().boundary;
@@ -111,7 +107,7 @@ public class EnemyManager : MonoBehaviour
                     {
                         Vector3 direction = currentState == MoveState.MoveRight ? Vector3.right : Vector3.left;
 
-                        MoveEnemy(enemies[row, col], direction, _stepDistance * speedMultiplier);
+                        MoveEnemy(enemies[row, col], direction, _stepDistance);
 
                         if (enemies[row, col] == null) continue;
 
@@ -170,7 +166,7 @@ public class EnemyManager : MonoBehaviour
             {
                 yield return new WaitUntil(() => !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding);
 
-                yield return new WaitForSeconds(Random.Range(missileInterval / fireRateMultiplier, missileInterval * 2 / fireRateMultiplier));
+                yield return new WaitForSeconds(Random.Range(missileInterval, missileInterval * 2));
 
                 List<GameObject> shooters = GetBottomEnemies();
 
@@ -181,7 +177,7 @@ public class EnemyManager : MonoBehaviour
                     FireMissile(shooter);
                 }
 
-                yield return new WaitForSeconds(Random.Range(missileInterval / fireRateMultiplier, missileInterval * 2 / fireRateMultiplier));
+                yield return new WaitForSeconds(Random.Range(missileInterval, missileInterval * 2));
 
                 if (shooters.Count > 0 && !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
                 {
@@ -190,7 +186,7 @@ public class EnemyManager : MonoBehaviour
                     FireLaser(shooter);
                 }
 
-                yield return new WaitForSeconds(Random.Range(missileInterval / fireRateMultiplier, missileInterval * 2 / fireRateMultiplier));
+                yield return new WaitForSeconds(Random.Range(missileInterval, missileInterval * 2));
 
                 if (shooters.Count > 0 && !GameManager.Instance.IsPaused && !GameManager.Instance.isExploding)
                 {
@@ -380,13 +376,11 @@ public class EnemyManager : MonoBehaviour
 
     public void StartNextWave()
     {
+        GameObject.Find("SceneManager").GetComponent<LevelManager>().OnWaveCompleted();
+
         reverseGrave = 0;
 
         currentState = MoveState.MoveRight;
-
-        currentLoop++;
-        speedMultiplier = 1f + currentLoop * 0.1f;
-        fireRateMultiplier = 1f + currentLoop * 0.1f;
 
         SpawnEnemies();
 

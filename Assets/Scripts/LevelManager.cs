@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -20,10 +21,10 @@ public class LevelManager : MonoBehaviour
 
     private readonly int[] waveBonus =
     {
-        3990,
-        2190,
-        2190,
-        1890
+        3000,
+        1200,
+        1200,
+        900
     };
 
     private void Awake()
@@ -45,7 +46,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentWave >= MAX_WAVES)
         {
-            GameWon();
+            currentWave = 0;
             return;
         }
 
@@ -54,7 +55,7 @@ public class LevelManager : MonoBehaviour
 
     private void StartWave()
     {
-        enemyManager.rows = waveRows[currentWave].Length;
+        enemyManager.rows = 5;
         enemyManager.cols = 11;
 
         enemyManager.startPosition = new Vector2(-6.5f, 7.5f);
@@ -65,11 +66,5 @@ public class LevelManager : MonoBehaviour
         UFOManager ufoManager = FindFirstObjectByType<UFOManager>();
         if (ufoManager != null)
             ufoManager.OnWaveStarted(currentWave);
-    }
-
-    private void GameWon()
-    {
-        Debug.Log("FIN DU JEU – 4 VAGUES TERMINÉES");
-        GameManager.Instance.GameOver();
     }
 }

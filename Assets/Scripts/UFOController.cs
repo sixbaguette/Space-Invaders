@@ -28,6 +28,7 @@ public class UFOController : MonoBehaviour
     public void Initialize(int currentShots)
     {
         spawnShotIndex = currentShots;
+        gameObject.SetActive(true);
     }
 
     public void SetDirection(Vector2 dir)
@@ -57,7 +58,7 @@ public class UFOController : MonoBehaviour
         if (!other.CompareTag("Missile")) return;
 
         int shotsAfterSpawn = PlayerShotCounter.Instance.TotalShots - spawnShotIndex;
-        scoreUFODeath = shotsAfterSpawn <= 1 ? 300 : (shotsAfterSpawn == 2 ? 150 : 100);
+        scoreUFODeath = shotsAfterSpawn <= 1 ? 300 : (shotsAfterSpawn == 2 ? 150 : (shotsAfterSpawn == 3 ? 100 : 50));
 
         GameManager.Instance.AddScore(scoreUFODeath);
 

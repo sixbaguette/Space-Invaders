@@ -166,9 +166,6 @@ MonoBehaviour:
   missilePoint: {fileID: 0}
   missileInterval: 2
   textScrore: {fileID: 1094250622}
-  currentLoop: 0
-  speedMultiplier: 1
-  fireRateMultiplier: 1
 --- !u!114 &91583886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,7 +703,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1163,7 +1160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ufoPool: {fileID: 535596636}
-  yPosition: 8
+  yPosition: 9
   xOffset: 12
 --- !u!4 &700877071
 Transform:
@@ -1593,7 +1590,7 @@ GameObject:
   - component: {fileID: 1027216721}
   - component: {fileID: 1027216720}
   - component: {fileID: 1027216725}
-  - component: {fileID: 1027216719}
+  - component: {fileID: 1027216726}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1601,18 +1598,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1027216719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027216717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91a55ac9f13dd3b43abb3fa6d44313eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &1027216720
 Rigidbody2D:
   serializedVersion: 5
@@ -1858,8 +1843,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missilePrefab: {fileID: 2385425526990083850, guid: 6b861323e878b184eaedf2495b7ebb22, type: 3}
   firePoint: {fileID: 1148127621}
-  poolSize: 100
+  poolSize: 10
   fireCooldown: 0
+--- !u!114 &1027216726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027216717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a55ac9f13dd3b43abb3fa6d44313eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1059050581
 GameObject:
   m_ObjectHideFlags: 0
